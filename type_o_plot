@@ -1,0 +1,1 @@
+plot(X,Y,type='o',xlab=c(""),ylab=c(""))
