@@ -1,0 +1,4 @@
+library(ggplot2)
+library(ggridges)
+
+ggplot(할당된변수,aes(x=X축,y=as.factor(Y축))) + geom_density_ridges() + xlab('') + ylab('')
