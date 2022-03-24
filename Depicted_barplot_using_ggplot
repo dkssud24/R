@@ -10,7 +10,7 @@
 #0.2651	0.0322	bmd	Moderate drinker	bmd_Moderate drinker	0.2329	0.2973
 #0.2453	0.0281	bmd	Severe drinker	bmd_Severe drinker	0.2172	0.2734
 
-
+library(ggplot2)
 ggplot(bmi,aes(group,heri,fill=group))+geom_bar(stat='identity',position='dodge') + geom_errorbar(aes(group,ymin=heri-heri_se,ymax=heri+heri_se),width=0.4) + xlab("") + ylab("Genetic heritability (%)") + ylim(c(0,0.5)) 
 
 
