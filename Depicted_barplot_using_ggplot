@@ -1,0 +1,17 @@
+#Depicted the bar plot
+
+#input format
+
+#heri	heri_se	pheno	group	sep_group	min	max
+#0.1091	0.0428	alt	Non drinker	alt_Non drinker	0.0663	0.1519
+#0.1854	0.0264	alt	Moderate drinker	alt_Moderate drinker	0.159	0.2118
+#0.1008	0.0149	alt	Severe drinker	alt_Severe drinker	0.0859	0.1157
+#0.1905	0.0799	bmd	Non drinker	bmd_Non drinker	0.1106	0.2704
+#0.2651	0.0322	bmd	Moderate drinker	bmd_Moderate drinker	0.2329	0.2973
+#0.2453	0.0281	bmd	Severe drinker	bmd_Severe drinker	0.2172	0.2734
+
+
+ggplot(bmi,aes(group,heri,fill=group))+geom_bar(stat='identity',position='dodge') + geom_errorbar(aes(group,ymin=heri-heri_se,ymax=heri+heri_se),width=0.4) + xlab("") + ylab("Genetic heritability (%)") + ylim(c(0,0.5)) 
+
+
+
