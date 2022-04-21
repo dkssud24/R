@@ -8,6 +8,7 @@ mean(mer2$Y)
 sd(mer2$Y)
 err <- sample(x=-580:580,size=1000,replace=TRUE)
 y <- x +err
+summary(lm(y~x))
 plot(x=x,y=y)
 
 #hetero
