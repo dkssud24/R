@@ -6,6 +6,7 @@ mer2 <- mer2[ mer2$X > 490,]
 #calulate mean of error in the mideian group
 mean(mer2$Y)
 sd(mer2$Y)
+y <- NULL
 err <- sample(x=-580:580,size=1000,replace=TRUE)
 y <- x +err
 summary(lm(y~x))
