@@ -1,0 +1,5 @@
+install.pakcages("PEIP")
+
+library(PEIP)
+
+tinv(p,df)
