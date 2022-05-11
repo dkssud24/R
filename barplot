@@ -1,0 +1,16 @@
+> df
+   risk_count total percent
+1           0 40539   22.85
+2           1 52982   29.87
+3           2 40425   22.79
+4           3 23398   13.19
+5           4 11593    6.54
+6           5  5273    2.97
+7           6  1980    1.12
+8           7   788    0.44
+9           8   292    0.16
+10          9    85    0.05
+11         10    24    0.01
+12         11     1    0.00
+13         13     1    0.00
+> ggplot(tmp,aes(x=risk_count,y=percent))+geom_bar(stat='identity',width=0.2)+geom_text(aes(label=percent),vjust=-0.2) + ylim(0,70) + ylab("Percentage") + xlab("Count")
