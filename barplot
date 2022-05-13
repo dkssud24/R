@@ -13,4 +13,12 @@
 11         10    24    0.01
 12         11     1    0.00
 13         13     1    0.00
-> ggplot(tmp,aes(x=risk_count,y=percent))+geom_bar(stat='identity',width=0.2)+geom_text(aes(label=percent),vjust=-0.2) + ylim(0,70) + ylab("Percentage") + xlab("Count")
+> ggplot(df,aes(x=risk_count,y=percent))+geom_bar(stat='identity',width=0.2)+geom_text(aes(label=percent),vjust=-0.2) + ylim(0,70) + ylab("Percentage") + xlab("Count")
+
+> tmp
+  risk_count  total percent
+1          0  40539   22.85
+2          1 136842   77.14
+#2개만 그릴때
+ggplot(tmp,aes(x=risk_count,y=percent,fill=as.factor(risk_count)))+geom_bar(stat='identity',width=0.2,colour="black")+geom_text(aes(label=percent),vjust=-0.2) + ylim(0,100) + ylab("Percentage") + xlab("Count") + xlim(-0.5,1.5)  +  scale_fill_manual(values= c('blue','red')) 
+
