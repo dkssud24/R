@@ -28,4 +28,4 @@ lb3$hjust <- ifelse(angle < -90,1,0)
 lb3$angle <- ifelse(angle < -90, angle+180, angle)
 
 #Depicted sun plot
-ggplot(df3,aes(x=rno,y=Ratio,fill=Fill))+geom_bar(stat='identity') +scale_fill_nord('victory_bonds')+theme_void() +  geom_hline(yintercept=0:3,color="gray") +  coord_polar(start=0)+ geom_vline(xintercept=4.5) +geom_vline(xintercept=1:167-0.5,color="gray90")+ geom_vline(xintercept=point)
+ggplot(df3,aes(x=rno,y=Ratio,fill=Fill))+geom_bar(stat='identity') +scale_fill_nord('victory_bonds')+theme_void() +  geom_hline(yintercept=a,color="gray") + geom_hline(yintercept=b,color="black",size=2)+coord_polar(start=0) +geom_vline(xintercept=1:167-0.5,color="gray90")+ geom_vline(xintercept=point)
