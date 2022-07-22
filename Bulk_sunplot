@@ -1,0 +1,7 @@
+root <- read.csv('/Users/user/Desktop/phase2_99_GPS_HR/Sun_Figure/root.csv')
+pheno <- read.csv('/Users/user/Desktop/phase2_99_GPS_HR/Sun_Figure/pheno_1st.csv')
+ch <- pheno$Index
+p1 <- root [ root$Trait == 3147,] 
+nrow_value <- nrow(p1)
+p1["rno"] <- rep(1:nrow_value)
+
