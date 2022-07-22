@@ -2,45 +2,61 @@ library(dplyr)
 root <- read.csv('/Users/user/Desktop/phase2_99_GPS_HR/Sun_Figure/root.csv')
 pheno <- read.csv('/Users/user/Desktop/phase2_99_GPS_HR/Sun_Figure/pheno_1st.csv')
 ch2 <- pheno$Index
-p1 <- root [ root$Trait == ch2,] 
-nrow_value <- nrow(p1)
-p1["rno"] <- rep(1:nrow_value)
 
-df3 <- data.frame(p1)
-lb3 <- df3
 
-#Investigation of end point
-library(dplyr)
+index <- 0
 
-ch <- df3$Fill
-ch <- unique(ch)
-endpoint <- 0 
-point <- NULL
-for (i in ch){
-  
-  a <- df3[df3$Fill == i,] %>% nrow()
-  print(a)
-  endpoint <- (endpoint + a)
-  print(endpoint)
-  point <- c(point,endpoint)
-  
+rav <- NULL
+#ch2 <- 102
+for (i in 1:60){
+  k <- paste0("var",i,sep="")
+  rav <- c(rav,k)
 }
-point <- point + 0.5
-print(point)
+
+for (i in ch2){
+    index <- index +1
+    p1 <- root [ root$Trait == ch2,] 
+    nrow_value <- nrow(p1)
+    p1["rno"] <- rep(1:nrow_value)
+    df3 <- data.frame(p1)
+    lb3 <- df3
+  
+    ch <- df3$Fill
+    ch <- unique(ch)
+    endpoint <- 0 
+    point <- NULL
+    for (q in ch){
+    
+      a <- df3[df3$Fill == q,] %>% nrow()
+      #print(a)
+      endpoint <- (endpoint + a)
+      #print(endpoint)
+      point <- c(point,endpoint)
+    }
+  
+    point <- point + 0.5
+    print(point)
+  
+  
+    #Convert to circular format
+    angle <- 90-(360*(lb3$rno-0.5)/nrow(df3))
+    lb3$hjust <- ifelse(angle < -90,1,0)
+    lb3$angle <- ifelse(angle < -90, angle+180, angle)
+  
+    #Assign scale of X size
+    b <- nrow(df3)
+    a <- c(0.5,1.5,2.5)
+    c <- c(1,2,3)
+  
+    #Depicted sun plot 
+    #ggplot(df3,aes(x=rno,y=Ratio,fill=Fill))+geom_bar(stat='identity') +scale_fill_nord('victory_bonds')+theme_void() +  geom_hline(yintercept=a,color="gray") + geom_hline(yintercept=c,color="black",size=2)+coord_polar(start=0) +geom_vline(xintercept=1:b-0.5,color="gray90")+ geom_vline(xintercept=point)
+    #png(filename=paste("C:/Users/user/Desktop/phase2_99_GPS_HR/Sun_Figure/TMP/",ch[2],".png",sep=""),height=553,width=865)
+    #pdf(file =paste("C:/Users/user/Desktop/phase2_99_GPS_HR/Sun_Figure/TMP/",i,".pdf",sep=""),height=5,width=5)
+    #code_line <- paste0("g",var[index],"<-ggplot(df3,aes(x=rno,y=Ratio,fill=Fill))+geom_bar(stat='identity') +scale_fill_nord('victory_bonds')+theme_void() +  geom_hline(yintercept=a,color="gray",size=0.1) + geom_hline(yintercept=c,color="black",size=0.1)+coord_polar(start=0) +geom_vline(xintercept=1:b-0.5,color="gray90",size=0.001)+ geom_vline(xintercept=point,size=0.1) + theme(legend.position = "none")) 
+    #XOXO <- ggplot(df3,aes(x=rno,y=Ratio,fill=Fill))+geom_bar(stat='identity') +scale_fill_nord('victory_bonds')+theme_void() +  geom_hline(yintercept=a,color="gray",size=0.1) + geom_hline(yintercept=c,color="black",size=0.1)+coord_polar(start=0) +geom_vline(xintercept=1:b-0.5,color="gray90",size=0.001)+ geom_vline(xintercept=point,size=0.1) + theme(legend.position = "none")")
+  
+    assign(rav[index],ggplot(df3,aes(x=rno,y=Ratio,fill=Fill))+geom_bar(stat='identity') +scale_fill_nord('victory_bonds')+theme_void() +  geom_hline(yintercept=a,color="gray",size=0.1) + geom_hline(yintercept=c,color="black",size=0.1)+coord_polar(start=0) +geom_vline(xintercept=1:b-0.5,color="gray90",size=0.001)+ geom_vline(xintercept=point,size=0.1) + theme(legend.position = "none"))
+    ggsave(file =paste("C:/Users/user/Desktop/phase2_99_GPS_HR/Sun_Figure/TMP/",i,".pdf",sep=""),height=5,width=5)
+}
 
 
-#Convert to circular format
-angle <- 90-(360*(lb3$rno-0.5)/nrow(df3))
-lb3$hjust <- ifelse(angle < -90,1,0)
-lb3$angle <- ifelse(angle < -90, angle+180, angle)
-
-#Assign scale of X size
-b <- nrow(df3)
-a <- c(0.5,1.5,2.5)
-c <- c(1,2,3,4)
-
-#Depicted sun plot
-#ggplot(df3,aes(x=rno,y=Ratio,fill=Fill))+geom_bar(stat='identity') +scale_fill_nord('victory_bonds')+theme_void() +  geom_hline(yintercept=a,color="gray") + geom_hline(yintercept=c,color="black",size=2)+coord_polar(start=0) +geom_vline(xintercept=1:b-0.5,color="gray90")+ geom_vline(xintercept=point)
-#png(filename=paste("C:/Users/user/Desktop/phase2_99_GPS_HR/Sun_Figure/TMP/",ch[2],".png",sep=""),height=553,width=865)
-ggplot(df3,aes(x=rno,y=Ratio,fill=Fill))+geom_bar(stat='identity') +scale_fill_nord('victory_bonds')+theme_void() +  geom_hline(yintercept=a,color="gray") + geom_hline(yintercept=c,color="black",size=1)+coord_polar(start=0) +geom_vline(xintercept=1:b-0.5,color="gray90")+ geom_vline(xintercept=point)
-dev.off()
