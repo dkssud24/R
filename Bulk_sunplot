@@ -1,3 +1,4 @@
+library(dplyr)
 root <- read.csv('/Users/user/Desktop/phase2_99_GPS_HR/Sun_Figure/root.csv')
 pheno <- read.csv('/Users/user/Desktop/phase2_99_GPS_HR/Sun_Figure/pheno_1st.csv')
 ch <- pheno$Index
@@ -5,3 +6,39 @@ p1 <- root [ root$Trait == 3147,]
 nrow_value <- nrow(p1)
 p1["rno"] <- rep(1:nrow_value)
 
+df3 <- data.frame(p1)
+lb3 <- df3
+
+#Investigation of end point
+library(dplyr)
+
+ch <- df3$Fill
+ch <- unique(ch)
+endpoint <- 0 
+point <- NULL
+for (i in ch){
+  
+  a <- df3[df3$Fill == i,] %>% nrow()
+  print(a)
+  endpoint <- (endpoint + a)
+  print(endpoint)
+  point <- c(point,endpoint)
+  
+}
+point <- point + 0.5
+print(point)
+
+
+#Convert to circular format
+angle <- 90-(360*(lb3$rno-0.5)/nrow(df3))
+lb3$hjust <- ifelse(angle < -90,1,0)
+lb3$angle <- ifelse(angle < -90, angle+180, angle)
+
+#Assign scale of X size
+b <- nrow(df3)
+a <- c(0.5,1.5,2.5)
+c <- c(1,2,3,4)
+
+#Depicted sun plot
+#ggplot(df3,aes(x=rno,y=Ratio,fill=Fill))+geom_bar(stat='identity') +scale_fill_nord('victory_bonds')+theme_void() +  geom_hline(yintercept=a,color="gray") + geom_hline(yintercept=c,color="black",size=2)+coord_polar(start=0) +geom_vline(xintercept=1:b-0.5,color="gray90")+ geom_vline(xintercept=point)
+ggplot(df3,aes(x=rno,y=Ratio,fill=Fill))+geom_bar(stat='identity') +scale_fill_nord('victory_bonds')+theme_void() +  geom_hline(yintercept=a,color="gray") + geom_hline(yintercept=c,color="black",size=1)+coord_polar(start=0) +geom_vline(xintercept=1:b-0.5,color="gray90")+ geom_vline(xintercept=point)
