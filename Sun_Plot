@@ -1,9 +1,12 @@
+library(dplyr)
+library(data.table)
+libraryr(ggplot2)
+
 df3 <- read.csv("")
 df3 <- data.frame(df3)
 lb3 <- df3
 
 #Investigation of end point
-library(dplyr)
 
 ch <- df3$Fill
 ch <- unique(ch)
