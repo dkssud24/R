@@ -1,0 +1,26 @@
+library(survival)
+library(asaur)
+library(dplyr)
+library(ggplot2)
+
+d <- read.table("input_HR.txt.HRNGSG",header=T)
+head(d)
+        DIST_ID SCORESUM Time Status tile10 tile100
+1 NIH20B8337989 0.625495    1      1     10      95
+2 NIH20B8705975 0.746763    1      1     10      99
+3 NIH20B8741801 0.730988    1      1     10      99
+4 NIH20B8965959 0.642202    1      1     10      96
+5 NIH20B8550327 0.581680    1      1     10      92
+6 NIH20B8190781 0.571270    1      1     10      91
+
+HRNG <- d[ d$tile10 > 4,]
+HRSD <- d[ d$tile10 > 8,]
+tmp <- d [ d$tile10 <3,]
+HRSD <- rbind(HRSD,tmp)
+table(HRNG$tile10)
+HRNG["Group"] <- ifelse(HRNG$tile10 > 8,1,0)
+HRSD["Group"] <- ifelse(HRSD$tile10 > 8,1,0)
+m1 <- coxph(Surv(HRNG$Time,HRNG$Status)~ HRNG$Group)
+summary(m1)
+m1 <- coxph(Surv(HRSD$Time,HRSD$Status)~ HRSD$Group)
+summary(m1)
