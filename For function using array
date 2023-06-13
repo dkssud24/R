@@ -1,0 +1,30 @@
+mac <- c("M46", "M47", "M48", "M50", "M51", "M54", "M65", "M67", "M70", "M75", "M76", "M77", "M79", "M81", "M86", "N03", "N08", "N17", "N18", "N19", "N20", "N23", "N28", "N39", "N47", "N73", "N80", "N81", "N92", "N94", "O70", "R00", "R01", "R02", "R03", "R04", "R05", "R06", "T82", "T84", "U07", "W01", "W10", "W18", "W19", "Y45", "Y83", "Y95", "Z02", "Z03", "Z09", "Z11", "Z13", "Z22", "Z37", "Z45", "Z50", "Z51", "Z53", "Z57", "Z60", "Z72", "Z82", "Z85", "Z86", "Z87", "Z88", "Z89", "Z90", "Z91", "Z92", "Z95", "Z96", "Z99")
+for (mac_index in mac){
+print(mac_index)
+mac_index2 <- paste("/BiO/Hyein/90Traits/BT/QT_BT/2nd_validation_GWAS/phase3_44_GWAS_BT_in_GWASset/input_GPS/",mac_index,".csv",sep="")
+sumstats <- bigreadr::fread2(mac_index2)
+sumstats2 <- sumstats
+map <- obj.bigSNP$map[-(2:3)]
+names(map) <- c("chr", "pos", "a0", "a1")
+info_snp <- snp_match(sumstats2, map)
+fam.order <- as.data.table(obj.bigSNP$fam)
+setnames(fam.order, c("family.ID", "sample.ID"), c("FID", "IID"))
+df_beta <- info_snp[,c("beta", "beta_se", "n_eff", "_NUM_ID_")]
+ldsc <- snp_ldsc( ld, length(ld), chi2 = (df_beta$beta / df_beta$beta_se)^2, sample_size = df_beta$n_eff, blocks = NULL)
+h2_est <- ldsc[["h2"]]
+h2_est
+beta_inf <- snp_ldpred2_inf(corr, df_beta, h2 = h2_est)
+ind.test <- 1:nrow(G2)
+dim(G2)
+pred_inf <- big_prodVec( G2, beta_inf, ind.row = ind.test, ind.col = info_snp$`_NUM_ID_`)
+fo <- data.frame(fam.order)
+pi <- data.frame(pred_inf)
+m <- cbind(fo,pi)
+m <- data.frame(m)
+mac_index3 <- paste("/BiO/Hyein/90Traits/BT/QT_BT/2nd_validation_GWAS/phase3_44_GWAS_BT_in_GWASset/outcome_GPS_GPSset/",mac_index,sep="")
+write.csv(m,mac_index3,quote=FALSE,row.names=FALSE)
+beta_inf <- NULL
+pred_inf <- NULL
+mac_index2 <- NULL
+mac_index3 <- NULL
+}
