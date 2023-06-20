@@ -14,4 +14,214 @@ library(ggplot2)
 ggplot(bmi,aes(group,heri,fill=group))+geom_bar(stat='identity',position='dodge') + geom_errorbar(aes(group,ymin=heri-heri_se,ymax=heri+heri_se),width=0.4) + xlab("") + ylab("Genetic heritability (%)") + ylim(c(0,0.5)) 
 
 
+# APOE
+  APOE_e2_e4        case
+1          0 0.001361162
+2          1 0.002659016
+3          2 0.003355452
+4          3 0.011734044
+5          4 0.033388586
+
+
+  rs7412        case
+1     TT 0.001359927
+2     TC 0.003167919
+3     CC 0.006511820
+
+  rs429358        case
+1       TT 0.003136285
+2       TC 0.011146808
+3       CC 0.033333333
+
+
+ggplot(plot_rs7412,aes(rs7412,case,fill = rs7412)) + geom_bar(stat='identity') + scale_x_discrete(limits=c("TT","TC","CC"))  + ylim(0,0.06) + ylab("Proportion of AD")
+ggplot(plot_rs429358,aes(rs429358,case,fill = rs429358)) + geom_bar(stat='identity') + scale_x_discrete(limits=c("TT","TC","CC")) + ylim(0,0.06) + ylab("Proportion of AD")
+ggplot(plot_APOE_e2_e4,aes(APOE_e2_e4,case,fill = APOE_e2_e4)) + geom_bar(stat='identity')   + ylim(0,0.06) + ylab("Proportion of AD")+ xlab("APOE e2 + e4")
+
+
+ summary(glm(as.factor(case) ~ rs7412 + X31.0.0 + X21022.0.0 + array + X22009.0.1 + X22009.0.2 + X22009.0.3 + X22009.0.4 + X22009.0.5 + X22009.0.6 + X22009.0.7 + X22009.0.8 + X22009.0.9 + X22009.0.10 , data= m,family=binomial))
+
+Call:
+glm(formula = as.factor(case) ~ rs7412 + X31.0.0 + X21022.0.0 + 
+    array + X22009.0.1 + X22009.0.2 + X22009.0.3 + X22009.0.4 + 
+    X22009.0.5 + X22009.0.6 + X22009.0.7 + X22009.0.8 + X22009.0.9 + 
+    X22009.0.10, family = binomial, data = m)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-0.3201  -0.1283  -0.0736  -0.0335   4.2818  
+
+Coefficients:
+              Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -1.931e+01  4.303e-01 -44.871  < 2e-16 ***
+rs7412       7.331e-01  7.876e-02   9.308  < 2e-16 ***
+X31.0.0      5.212e-02  4.421e-02   1.179    0.238    
+X21022.0.0   2.075e-01  5.245e-03  39.555  < 2e-16 ***
+array       -2.139e-02  7.209e-02  -0.297    0.767    
+X22009.0.1   2.427e-03  1.398e-02   0.174    0.862    
+X22009.0.2   4.847e-03  1.480e-02   0.328    0.743    
+X22009.0.3  -3.403e-02  1.438e-02  -2.366    0.018 *  
+X22009.0.4   4.564e-03  1.056e-02   0.432    0.665    
+X22009.0.5   6.356e-03  4.294e-03   1.480    0.139    
+X22009.0.6  -1.588e-02  1.369e-02  -1.160    0.246    
+X22009.0.7   1.937e-02  1.219e-02   1.589    0.112    
+X22009.0.8   6.374e-04  1.216e-02   0.052    0.958    
+X22009.0.9   2.875e-02  5.475e-03   5.252 1.51e-07 ***
+X22009.0.10 -1.645e-02  1.064e-02  -1.546    0.122    
+---
+Signif. codes:  0 ??***?? 0.001 ??**?? 0.01 ??*?? 0.05 ??.?? 0.1 ?? ?? 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 25540  on 348976  degrees of freedom
+Residual deviance: 22716  on 348962  degrees of freedom
+AIC: 22746
+
+Number of Fisher Scoring iterations: 9
+
+summary(glm(as.factor(case) ~ rs429358 + X31.0.0 + X21022.0.0 + array + X22009.0.1 + X22009.0.2 + X22009.0.3 + X22009.0.4 + X22009.0.5 + X22009.0.6 + X22009.0.7 + X22009.0.8 + X22009.0.9 + X22009.0.10 , data= m,family=binomial))
+
+Call:
+glm(formula = as.factor(case) ~ rs429358 + X31.0.0 + X21022.0.0 + 
+    array + X22009.0.1 + X22009.0.2 + X22009.0.3 + X22009.0.4 + 
+    X22009.0.5 + X22009.0.6 + X22009.0.7 + X22009.0.8 + X22009.0.9 + 
+    X22009.0.10, family = binomial, data = m)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-0.7281  -0.1152  -0.0645  -0.0292   4.4111  
+
+Coefficients:
+              Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -18.681033   0.405814 -46.033  < 2e-16 ***
+rs429358      1.249766   0.032854  38.040  < 2e-16 ***
+X31.0.0       0.037028   0.044505   0.832   0.4054    
+X21022.0.0    0.210271   0.005288  39.766  < 2e-16 ***
+array        -0.051082   0.072536  -0.704   0.4813    
+X22009.0.1    0.002697   0.014012   0.193   0.8473    
+X22009.0.2    0.007281   0.014921   0.488   0.6256    
+X22009.0.3   -0.032936   0.014472  -2.276   0.0229 *  
+X22009.0.4    0.002683   0.010660   0.252   0.8013    
+X22009.0.5    0.008668   0.004336   1.999   0.0456 *  
+X22009.0.6   -0.019836   0.013798  -1.438   0.1505    
+X22009.0.7    0.018257   0.012310   1.483   0.1381    
+X22009.0.8    0.001270   0.012240   0.104   0.9174    
+X22009.0.9    0.026146   0.005498   4.756 1.98e-06 ***
+X22009.0.10  -0.017334   0.010699  -1.620   0.1052    
+---
+Signif. codes:  0 ??***?? 0.001 ??**?? 0.01 ??*?? 0.05 ??.?? 0.1 ?? ?? 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 25540  on 348976  degrees of freedom
+Residual deviance: 21540  on 348962  degrees of freedom
+AIC: 21570
+
+Number of Fisher Scoring iterations: 9
+
+ summary(glm(as.factor(case) ~ APOE_e2_e4 + X31.0.0 + X21022.0.0 + array + X22009.0.1 + X22009.0.2 + X22009.0.3 + X22009.0.4 + X22009.0.5 + X22009.0.6 + X22009.0.7 + X22009.0.8 + X22009.0.9 + X22009.0.10 , data= m,family=binomial))
+
+
+Call:
+glm(formula = as.factor(case) ~ APOE_e2_e4 + X31.0.0 + X21022.0.0 + 
+    array + X22009.0.1 + X22009.0.2 + X22009.0.3 + X22009.0.4 + 
+    X22009.0.5 + X22009.0.6 + X22009.0.7 + X22009.0.8 + X22009.0.9 + 
+    X22009.0.10, family = binomial, data = m)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-0.6886  -0.1152  -0.0630  -0.0286   4.5029  
+
+Coefficients:
+              Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -20.667819   0.414016 -49.920  < 2e-16 ***
+APOE_e2_e4    1.099385   0.030660  35.858  < 2e-16 ***
+X31.0.0       0.041164   0.044468   0.926   0.3546    
+X21022.0.0    0.209992   0.005284  39.738  < 2e-16 ***
+array        -0.046893   0.072486  -0.647   0.5177    
+X22009.0.1    0.003475   0.014002   0.248   0.8040    
+X22009.0.2    0.007107   0.014900   0.477   0.6334    
+X22009.0.3   -0.032941   0.014466  -2.277   0.0228 *  
+X22009.0.4    0.002894   0.010634   0.272   0.7855    
+X22009.0.5    0.007877   0.004328   1.820   0.0687 .  
+X22009.0.6   -0.019778   0.013789  -1.434   0.1515    
+X22009.0.7    0.018777   0.012294   1.527   0.1267    
+X22009.0.8    0.001405   0.012234   0.115   0.9086    
+X22009.0.9    0.026256   0.005485   4.787  1.7e-06 ***
+X22009.0.10  -0.016841   0.010692  -1.575   0.1152    
+---
+Signif. codes:  0 ??***?? 0.001 ??**?? 0.01 ??*?? 0.05 ??.?? 0.1 ?? ?? 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 25540  on 348976  degrees of freedom
+Residual deviance: 21578  on 348962  degrees of freedom
+AIC: 21608
+
+Number of Fisher Scoring iterations: 9
+
+summary(glm(as.factor(case) ~ scale(PGS) + X31.0.0 + X21022.0.0 + array + X22009.0.1 + X22009.0.2 + X22009.0.3 + X22009.0.4 + X22009.0.5 + X22009.0.6 + X22009.0.7 + X22009.0.8 + X22009.0.9 + X22009.0.10 , data= m,family=binomial))
+
+Call:
+glm(formula = as.factor(case) ~ scale(PGS) + X31.0.0 + X21022.0.0 + 
+    array + X22009.0.1 + X22009.0.2 + X22009.0.3 + X22009.0.4 + 
+    X22009.0.5 + X22009.0.6 + X22009.0.7 + X22009.0.8 + X22009.0.9 + 
+    X22009.0.10, family = binomial, data = m)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-0.7304  -0.1191  -0.0661  -0.0302   4.6022  
+
+Coefficients:
+              Estimate Std. Error z value Pr(>|z|)    
+(Intercept) -18.325839   0.404475 -45.308  < 2e-16 ***
+scale(PGS)    0.622886   0.020643  30.175  < 2e-16 ***
+X31.0.0       0.033470   0.044377   0.754   0.4507    
+X21022.0.0    0.209497   0.005276  39.710  < 2e-16 ***
+array        -0.033804   0.072338  -0.467   0.6403    
+X22009.0.1   -0.007163   0.013994  -0.512   0.6087    
+X22009.0.2    0.004496   0.014865   0.302   0.7623    
+X22009.0.3   -0.032979   0.014424  -2.286   0.0222 *  
+X22009.0.4    0.000379   0.010604   0.036   0.9715    
+X22009.0.5    0.004692   0.004320   1.086   0.2774    
+X22009.0.6   -0.016724   0.013766  -1.215   0.2244    
+X22009.0.7    0.020806   0.012254   1.698   0.0895 .  
+X22009.0.8    0.001605   0.012189   0.132   0.8952    
+X22009.0.9    0.023374   0.005497   4.252 2.12e-05 ***
+X22009.0.10  -0.018097   0.010651  -1.699   0.0893 .  
+---
+Signif. codes:  0 ??***?? 0.001 ??**?? 0.01 ??*?? 0.05 ??.?? 0.1 ?? ?? 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 25540  on 348976  degrees of freedom
+Residual deviance: 21948  on 348962  degrees of freedom
+AIC: 21978
+
+Number of Fisher Scoring iterations: 9
+
+APOE_Genotype <- c(0,1,2,3,4)
+APOE_proportion <- c(2204,42873,212192,83262,8446)
+APOE <- cbind(APOE_Genotype,APOE_proportion)
+APOE <- data.frame(APOE)
+APOE <- data.frame(APOE)
+ggplot(APOE,aes(APOE_Genotype,APOE_proportion,fill = APOE_Genotype)) + geom_bar(stat='identity')   +  ylab("Sample size") + xlab("Count of APOE carrier")
+
+
+HR_APOE_proportion <- c(7.214156,4.793227,4.70423,31.71915,79.93133)
+ HR_APOE <- cbind(APOE_Genotype,HR_APOE_proportion)
+ HR_APOE <- data.frame(HR_APOE)
+ HR_APOE
+  APOE_Genotype HR_APOE_proportion
+1             0           7.214156
+2             1           4.793227
+3             2           4.704230
+4             3          31.719150
+5             4          79.931330
+
+ ggplot(HR_APOE,aes(APOE_Genotype,HR_APOE_proportion,fill = APOE_Genotype)) + geom_bar(stat='identity')   +  ylab("Proportion of APOE carrier (%)") + xlab("Count of APOE carrier") + ylim(0,100)
+
+
+
+
 
