@@ -222,6 +222,13 @@ HR_APOE_proportion <- c(7.214156,4.793227,4.70423,31.71915,79.93133)
  ggplot(HR_APOE,aes(APOE_Genotype,HR_APOE_proportion,fill = APOE_Genotype)) + geom_bar(stat='identity')   +  ylab("Proportion of APOE carrier (%)") + xlab("Count of APOE carrier") + ylim(0,100)
 
 
+  Percentile       OR
+1          1 5.534875
+2          2 5.417449
+3          3 5.214834
+4          4 4.686057
+5          5 4.564980
+6          6 4.466023
 
-
+ggplot(d,aes(Percentile,OR,fill=Percentile)) + geom_bar(stat='identity') + ylim(0,6) + geom_hline(yintercept=2.5,color='red',size=1)
 
