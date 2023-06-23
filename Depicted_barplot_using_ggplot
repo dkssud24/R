@@ -232,3 +232,29 @@ HR_APOE_proportion <- c(7.214156,4.793227,4.70423,31.71915,79.93133)
 
 ggplot(d,aes(Percentile,OR,fill=Percentile)) + geom_bar(stat='identity') + ylim(0,6) + geom_hline(yintercept=2.5,color='red',size=1)
 
+
+   Percentile   Type n
+1           5     AF 1
+2          13    CAD 1
+3           1 Stroke 1
+4           1     IS 1
+5           9    VTE 1
+6           2     DR 1
+7           5     HT 1
+8          20   Gout 1
+9           8    T2D 1
+10         32     CD 1
+11          1   NAFL 1
+12         13     AZ 1
+13         17     BD 1
+14         14    SCZ 1
+15         29    IBD 1
+16         10    SLE 1
+17         19    PSO 1
+18          4     RA 1
+19          8     MS 1
+20          2    CHO 1
+21          2     IH 1
+22          1     AP 1
+ggplot(d,aes(x=Percentile,y=n,fill=Type)) + geom_bar(stat='identity') + geom_text(aes(label = paste0(Type,"\n")),position = position_stack(vjust= 0.5))
+
