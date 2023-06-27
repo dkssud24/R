@@ -258,3 +258,12 @@ ggplot(d,aes(Percentile,OR,fill=Percentile)) + geom_bar(stat='identity') + ylim(
 22          1     AP 1
 ggplot(d,aes(x=Percentile,y=n,fill=Type)) + geom_bar(stat='identity') + geom_text(aes(label = paste0(Type,"\n")),position = position_stack(vjust= 0.5))
 
+
+  Group X    Y  UCI  LCI
+1     A 2 1.00 1.00 1.00
+2     C 2 3.16 4.08 2.44
+3     B 1 1.00 1.00 1.00
+4     C 1 1.63 1.98 1.34
+
+colorchip <- c("#66a182","#66a182","#d1495b")
+ggplot(d,aes(X,Y,fill=Group))+geom_bar(stat='identity',position='dodge')+  geom_errorbar(aes(ymin=LCI,ymax=UCI),width=.2,position=position_dodge(.9)) + scale_fill_manual(values=colorchip) + ylab("Harzard ratio") + xlim("Normal risk group vs High risk group","Low risk group vs High risk group" )
