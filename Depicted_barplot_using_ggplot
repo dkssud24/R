@@ -267,3 +267,7 @@ ggplot(d,aes(x=Percentile,y=n,fill=Type)) + geom_bar(stat='identity') + geom_tex
 
 colorchip <- c("#66a182","#66a182","#d1495b")
 ggplot(d,aes(X,Y,fill=Group))+geom_bar(stat='identity',position='dodge')+  geom_errorbar(aes(ymin=LCI,ymax=UCI),width=.2,position=position_dodge(.9)) + scale_fill_manual(values=colorchip) + ylab("Harzard ratio") + xlim("Normal risk group vs High risk group","Low risk group vs High risk group" )
+
+
+
+ggplot(t2d,aes(x=reorder(as.factor(Ancestry),N),y=N,fill=Ancestry)) + geom_bar(stat='identity',width=0.5) +theme(axis.text.x=element_text(angle=90, hjust=1)) + xlab("") + ylab("Ancestry distribution of PGS in the PGS catalog") + theme(axis.text.x = element_text(size=20,face='bold'),axis.text.y = element_text(size=20,face='bold')) + coord_flip()
