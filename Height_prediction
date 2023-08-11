@@ -1,0 +1,43 @@
+library(ROCR)
+library(data.table)
+library(dplyr)
+library(ggplot2)
+d <- fread("00_HEXA.txt.female")
+a <- fread("../11_PGS_catalog/PGS002803.txt.outcome.profile")
+m <- left_join(d,a,by="FID")
+cor.test(m$height,m$SCORESUM)
+summary(lm(height ~ SCORESUM + CT1_AGE,data=m))
+m2 <- m %>% mutate(tile100=ntile(SCORESUM,100))
+tmp <- aggregate(height~tile100,m2,mean)
+ggplot(tmp,aes(tile100,height))+ geom_point() + xlab("") + ylab("")
+all_env_merge_testing_data <- m2
+sample_num = sample(1:nrow(all_env_merge_testing_data), size = round(0.2 * nrow(all_env_merge_testing_data)))
+all_env_merge_testing_data_2 = all_env_merge_testing_data[ sample_num, ]
+all_env_merge_testing_data_8 = all_env_merge_testing_data[ -sample_num, ]
+dim(all_env_merge_testing_data_2)
+dim(all_env_merge_testing_data_8)
+summary(lm(height ~ SCORESUM + CT1_AGE,data=all_env_merge_testing_data_8))
+mean(all_env_merge_testing_data_8$height)
+#Fixed the effect size
+all_env_merge_testing_data_2 <- data.frame(all_env_merge_testing_data_2)
+#Male
+#all_env_merge_testing_data_2["predict_height"] <- 185.752871 + (all_env_merge_testing_data_2$CT1_AGE * (-0.195505)) + (all_env_merge_testing_data_2$SCORESUM * 5.715317)
+#Female
+#all_env_merge_testing_data_2["predict_height"] <- 172.672022 + (all_env_merge_testing_data_2$CT1_AGE * (-0.195054)) + (all_env_merge_testing_data_2$SCORESUM * 5.258348)
+#ggplot(all_env_merge_testing_data_2,aes(predict_height,height)) + geom_point()
+zz <- data.frame(all_env_merge_testing_data_2$height - all_env_merge_testing_data_2$predict_height)
+head(zz)
+all_env_merge_testing_data_2["Error"] <- (all_env_merge_testing_data_2$height - all_env_merge_testing_data_2$predict_height)
+#ggplot(all_env_merge_testing_data_2,aes(x=Error)) +geom_density()
+#hist(all_env_merge_testing_data_2$Error)
+test <- data.frame(all_env_merge_testing_data_2)
+for (i in seq(0, 10, by = 0.1)) {
+ b <- paste("Range",i,sep="")
+ test[b] <- ifelse(abs(test$Error) < i ,1,0) 
+ }
+
+for (i in seq(13, 113, by = 1)) {
+ a <- (sum(test[i])/dim(test)[1])
+# print(i)
+ print(a)
+ }
