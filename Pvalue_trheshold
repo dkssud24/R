@@ -10,4 +10,10 @@ for (i in 1:7){
 	tmp <- tmp [ tmp$P < c,]
 	assign(variable_name,tmp)
 }
-	
+
+
+for (i in 0:8){
+	variable_names2 <- paste("P", i, sep = "")
+	mean_ratios <- sapply(variable_names2,function(var) { mean(get(var)$Ratio)})
+	print(mean_ratios)
+}
