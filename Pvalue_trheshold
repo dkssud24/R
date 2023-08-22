@@ -1,0 +1,13 @@
+a=5.00E-08
+b=10
+P0 <- m [m$P < 5.00E-08,]
+P8 <- m [ m$P >= 0.05,]
+for (i in 1:7){
+	variable_name <- paste("P",i,sep="")
+	c=a*(b^(i-1))
+	tmp<- m [ m$P >= c,]
+	c=a*(b^i)
+	tmp <- tmp [ tmp$P < c,]
+	assign(variable_name,tmp)
+}
+	
