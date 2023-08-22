@@ -12,8 +12,17 @@ for (i in 1:7){
 }
 
 
-for (i in 0:8){
-	variable_names2 <- paste("P", i, sep = "")
-	mean_ratios <- sapply(variable_names2,function(var) { mean(get(var)$Ratio)})
-	print(mean_ratios)
+mean_df <- data.frame(P = numeric(0), Mean_Ratio = numeric(0))
+
+for (i in 0:8) {
+  variable_names2 <- paste("P", i, sep = "")
+  mean_ratios <- sapply(variable_names2, function(var) { mean(get(var)$Ratio) })
+
+  variable_names3 <- paste("meanofP", i, sep = "")
+  assign(variable_names3, mean_ratios)
+
+  mean_df <- rbind(mean_df, data.frame(P = i, Mean_Ratio = mean_ratios))
 }
+
+print(mean_df)
+	
