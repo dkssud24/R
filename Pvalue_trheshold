@@ -26,3 +26,95 @@ for (i in 0:8) {
 
 print(mean_df)
 	
+
+#########################
+
+#Ratio 비율 볼때 (10의 제곱으로 늘때)
+a=5.00E-08
+b=10
+P0 <- m [m$P < 5.00E-08,]
+P8 <- m [ m$P >= 0.05,]
+for (i in 1:7){
+	variable_name <- paste("P",i,sep="")
+	c=a*(b^(i-1))
+	tmp<- m [ m$P >= c,]
+	c=a*(b^i)
+	tmp <- tmp [ tmp$P < c,]
+	assign(variable_name,tmp)
+}
+
+
+mean_df <- data.frame(P = numeric(0), Mean_Ratio = numeric(0))
+
+for (i in 0:8) {
+  variable_names2 <- paste("P", i, sep = "")
+  mean_ratios <- sapply(variable_names2, function(var) { mean(get(var)$Ratio) })
+
+  variable_names3 <- paste("meanofP", i, sep = "")
+  assign(variable_names3, mean_ratios)
+
+  mean_df <- rbind(mean_df, data.frame(P = i, Mean_Ratio = mean_ratios))
+}
+
+print(mean_df)
+
+
+
+
+
+#아래는 10의2제곱씩 증가할때
+a=5.00E-08
+b=10
+P0 <- m [m$P < 5.00E-08,]
+P8 <- m [ m$P >= 0.05,]
+for (i in seq(from=2,to=8,by=2)){
+	variable_name <- paste("P",i,sep="")
+	c=a*(b^(i-2))
+	tmp<- m [ m$P >= c,]
+	c=a*(b^(i))
+	tmp <- tmp [ tmp$P < c,]
+	assign(variable_name,tmp)
+}
+P0 <- m [m$P < 5.00E-08,]
+
+mean_df <- data.frame(P = numeric(0), Mean_Ratio = numeric(0))
+for (i in seq(from=0,to=8,by=2)) {
+  variable_names2 <- paste("P", i, sep = "")
+  mean_ratios <- sapply(variable_names2, function(var) { mean(get(var)$Ratio) })
+
+  variable_names3 <- paste("meanofP", i, sep = "")
+  assign(variable_names3, mean_ratios)
+
+  mean_df <- rbind(mean_df, data.frame(P = i, Mean_Ratio = mean_ratios))
+}
+print(mean_df)
+
+#EAS_GWAS_SCORE 볼떄
+
+mean_df <- data.frame(P = numeric(0), EAS_SCORE = numeric(0))
+for (i in seq(from=0,to=8,by=2)) {
+  variable_names2 <- paste("P", i, sep = "")
+  EAS_SCORE <- sapply(variable_names2, function(var) { mean(abs(get(var)$EAS_SCORE)) })
+
+  variable_names3 <- paste("meanofEASSCORE", i, sep = "")
+  assign(variable_names3, EAS_SCORE)
+
+  mean_df <- rbind(mean_df, data.frame(P = i, EAS_SCORE = EAS_SCORE))
+}
+print(mean_df)
+
+
+#TA_SCORE 볼떄
+
+mean_df <- data.frame(P = numeric(0), TA_SCORE = numeric(0))
+for (i in seq(from=0,to=8,by=2)) {
+  variable_names2 <- paste("P", i, sep = "")
+  TA_SCORE <- sapply(variable_names2, function(var) { mean(abs(get(var)$TA_SCORE)) })
+
+  variable_names3 <- paste("meanofTASCORE", i, sep = "")
+  assign(variable_names3, TA_SCORE)
+
+  mean_df <- rbind(mean_df, data.frame(P = i, TA_SCORE = TA_SCORE))
+}
+print(mean_df)
+
