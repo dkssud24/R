@@ -1,0 +1,32 @@
+d
+Group	Prevlaence	Followup
+High	184	1
+High	194	2
+High	207	3
+High	217	4
+High	230	5
+High	241	6
+High	258	7
+High	258	8
+Remain	626	1
+Remain	717	2
+Remain	816	3
+Remain	909	4
+Remain	979	5
+Remain	1061	6
+Remain	1155	7
+Remain	1155	8
+
+a <- d[ d$Group == "High risk group",]
+a2 <- data.frame(binconf(a$Prevalence,(a$Prevalence+395),method='exact'))
+#393 control size
+b <- d[ d$Group == "Normal risk group",]
+b2 <- data.frame(binconf(b$Prevalence,(b$Prevalence+506),method='exact'))
+c <- d[ d$Group == "Low risk group",]
+c2 <- data.frame(binconf(c$Prevalence,(c$Prevalence+595),method='exact'))
+a2["Group"] <- c("High risk group")
+b2["Group"] <- c("Normal risk group")
+c2["Group"] <- c ("Low risk group")
+m <- rbind(a2,b2,c2)
+m["Followup"] <- d$Followup
+ggplot(m,aes(x=Followup,y=PointEst,color=Group,fill=Group))+geom_step(size=1.5)+geom_ribbon(aes(ymin=Lower,ymax=Upper),alpha=.1,linetype=0)+theme_bw()
