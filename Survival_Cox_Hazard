@@ -3,6 +3,19 @@ library(asaur)
 library(dplyr)
 library(ggplot2)
 
+#control은 최대 max time 넣을것
+cox_model <- coxph(Surv(Times2, T2D_merge) ~ SCORESUM + age + sex , data = m)
+summary(cox_model)
+
+
+
+
+
+
+
+
+
+##################
 d <- read.table("input_HR.txt.HRNGSG",header=T)
 head(d)
         DIST_ID SCORESUM Time Status tile10 tile100
