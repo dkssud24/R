@@ -3,6 +3,8 @@ library(asaur)
 library(dplyr)
 library(ggplot2)
 
+
+m["Times2"] <- ifelse(m$Times == 0 ,8,m$Times)
 #control은 최대 max time 넣을것
 cox_model <- coxph(Surv(Times2, T2D_merge) ~ SCORESUM + age + sex , data = m)
 summary(cox_model)
