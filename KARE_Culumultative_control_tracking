@@ -11,3 +11,18 @@ low <- d2 [ d2$tile100 < 11,]
 table(high$Times)
 table(ng$Times)
 table(low$Times)
+
+#PRSCS
+library(dplyr)
+#d <- read.table("/BiO/hae/phase2/phase3/phase4/phase5/66_Transfer/phase2_230426_2nd_validation/44_KARE_replication/11_EAS_EAS/Asthma/v6",header=T)
+d <- read.table("/BiO/hae/phase2/phase3/phase4/phase5/66_Transfer/phase2_230426_2nd_validation/44_KARE_replication/11_EAS_EAS/T2D/v7",header=T)
+cor.test(d$SCORESUM,d$Asthma_merge)
+d2 <- d %>% mutate(tile100 = ntile(SCORESUM,100))
+table(d2$tile100)
+high <- d2 [ d2$tile100 > 90,]
+ng <- d2 [ d2$tile100 > 45,]
+ng <- ng [ ng$tile100 < 56,]
+low <- d2 [ d2$tile100 < 11,]
+table(high$Times)
+table(ng$Times)
+table(low$Times)
