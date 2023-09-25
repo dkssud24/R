@@ -1,0 +1,45 @@
+library(ggplot2)
+library(data.table)
+library(dplyr)
+d <- read.csv("input_culmulatitve_v2.csv")
+
+
+#Asthma
+c <- d[ d$Disease == "Asthma",]
+max(c$Prevalence)
+a1 <- c [ c$Method =="PRSCS",]
+a2 <- c [ c$Method =="P+T (EAS + EUR)",]
+a3 <- c [ c$Method =="PRSCSX (EAS + EUR)",]
+ggplot(a1,aes(x=Followup,y=Prevalence,color=Group)) + geom_line(size = 2) + ylim(0,0.08)
+ggplot(a2,aes(x=Followup,y=Prevalence,color=Group)) + geom_line(size = 2) + ylim(0,0.08)
+ggplot(a3,aes(x=Followup,y=Prevalence,color=Group)) + geom_line(size = 2) + ylim(0,0.08)
+
+#CAD
+c <- d[ d$Disease == "Coronary artery disease",]
+max(c$Prevalence)
+a1 <- c [ c$Method =="PRSCS",]
+a2 <- c [ c$Method =="P+T (EAS + EUR)",]
+a3 <- c [ c$Method =="PRSCSX (EAS + EUR)",]
+ggplot(a1,aes(x=Followup,y=Prevalence,color=Group)) + geom_line(size = 2) + ylim(0,0.08)
+ggplot(a2,aes(x=Followup,y=Prevalence,color=Group)) + geom_line(size = 2) + ylim(0,0.08)
+ggplot(a3,aes(x=Followup,y=Prevalence,color=Group)) + geom_line(size = 2) + ylim(0,0.08)
+
+#Hypertension
+c <- d[ d$Disease == "Hypertension",]
+max(c$Prevalence)
+a1 <- c [ c$Method =="PRSCS",]
+a2 <- c [ c$Method =="P+T (EAS + EUR)",]
+a3 <- c [ c$Method =="PRSCSX (EAS + EUR)",]
+ggplot(a1,aes(x=Followup,y=Prevalence,color=Group)) + geom_line(size = 2) + ylim(0,0.60)
+ggplot(a2,aes(x=Followup,y=Prevalence,color=Group)) + geom_line(size = 2) + ylim(0,0.60)
+ggplot(a3,aes(x=Followup,y=Prevalence,color=Group)) + geom_line(size = 2) + ylim(0,0.60)
+
+#Obesity
+c <- d[ d$Disease == "Obesity",]
+max(c$Prevalence)
+a1 <- c [ c$Method =="PRSCS",]
+a2 <- c [ c$Method =="P+T (EAS + EUR)",]
+a3 <- c [ c$Method =="PRSCSX (EAS + EUR)",]
+ggplot(a1,aes(x=Followup,y=Prevalence,color=Group)) + geom_line(size = 2) + ylim(0,1)
+ggplot(a2,aes(x=Followup,y=Prevalence,color=Group)) + geom_line(size = 2) + ylim(0,1)
+ggplot(a3,aes(x=Followup,y=Prevalence,color=Group)) + geom_line(size = 2) + ylim(0,1)
