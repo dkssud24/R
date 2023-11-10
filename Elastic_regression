@@ -1,0 +1,119 @@
+> root_female_elastic_data <- root_female[,c(31,33,4,32)]
+> head(root_female_elastic_data)
+   SCORESUM BMI_PGS_Locke X21022.0.0 p50_i0
+1:  3.21218   -0.24895769         59  150.0
+2:  2.96436   -1.04824205         56  157.0
+3:  4.75762    0.25913459         57  166.5
+4:  4.15012   -0.04008842         65  166.0
+5:  4.79984    0.28363126         65  169.0
+6:  4.58535   -1.47135202         58  162.0
+> root_male_elastic_data <- root_male[,c(31,33,4,32)]
+> head(root_male_elastic_data)
+   SCORESUM BMI_PGS_Locke X21022.0.0 p50_i0
+1:  3.47238    0.40672435         63    161
+2:  3.89375   -0.81600759         65    176
+3:  4.29472    0.04747628         48    182
+4:  4.02670   -2.71218615         56    180
+5:  4.29776   -0.60383121         61    170
+6:  4.59719   -0.63146981         66    177
+> root_female_elastic_data <- na.omit(root_female_elastic_data)
+> dim(root_female_elastic_data)
+[1] 186833      4
+> dim(root_male_elastic_data)
+[1] 161532      4
+> root_male_elastic_data <- na.omit(root_male_elastic_data)
+> dim(root_male_elastic_data)
+[1] 160926      4
+> data_female <- model.matrix(p50_i0 ~ scale(SCORESUM) + X21022.0.0 + BMI_PGS_Locke, data = root_female_elastic_data)
+> data_male <- model.matrix(p50_i0 ~ scale(SCORESUM) + X21022.0.0 + BMI_PGS_Locke, data = root_male_elastic_data)
+> enet_model_female <- cv.glmnet(data, response, alpha = 0.5) 
+Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda,  : 
+  number of observations in y (187445) not equal to the number of rows of x (186833)
+> enet_model_female <- cv.glmnet(data_female, response, alpha = 0.5) 
+Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda,  : 
+  number of observations in y (187445) not equal to the number of rows of x (186833)
+> response <- root_female_elastic_data$p50_i0
+> response_female <- root_female_elastic_data$p50_i0
+> response_male <- root_male_elastic_data$p50_i0
+> enet_model_female <- cv.glmnet(data_female, response, alpha = 0.5) 
+^[
+> enet_model_male <- cv.glmnet(data_male, response, alpha = 0.5) 
+Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda,  : 
+  number of observations in y (186833) not equal to the number of rows of x (160926)
+> enet_model_male <- cv.glmnet(data_male, response_male, alpha = 0.5) 
+> enet_model_female <- cv.glmnet(data_male, response_female, alpha = 0.5) 
+Error in glmnet(x, y, weights = weights, offset = offset, lambda = lambda,  : 
+  number of observations in y (186833) not equal to the number of rows of x (160926)
+> enet_model_female <- cv.glmnet(data_female, response_female, alpha = 0.5) 
+
+> 
+> best_lambda_male <- enet_model_male$lambda.min
+> best_lambda_female <- enet_model_female$lambda.min
+> cat("Optimal Lambda:", best_lambda_female, "\n")
+Optimal Lambda: 0.02680466 
+> cat("Optimal Lambda:", best_lambda_male, "\n")
+Optimal Lambda: 0.0290891 
+> best_model_female <- glmnet(data_female, response_female, alpha = 0.5, lambda = best_lamb_female)
+Error in glmnet(data_female, response_female, alpha = 0.5, lambda = best_lamb_female) : 
+  object 'best_lamb_female' not found
+> best_model_female <- glmnet(data_female, response_female, alpha = 0.5, lambda = best_lambda_female)
+> best_model_male <- glmnet(data_male, response_male, alpha = 0.5, lambda = best_lambda_male)
+> summary(best_model)
+Error in h(simpleError(msg, call)) : 
+  error in evaluating the argument 'object' in selecting a method for function 'summary': object 'best_model' not found
+> summary(best_model_female)
+          Length Class     Mode   
+a0        1      -none-    numeric
+beta      4      dgCMatrix S4     
+df        1      -none-    numeric
+dim       2      -none-    numeric
+lambda    1      -none-    numeric
+dev.ratio 1      -none-    numeric
+nulldev   1      -none-    numeric
+npasses   1      -none-    numeric
+jerr      1      -none-    numeric
+offset    1      -none-    logical
+call      5      -none-    call   
+nobs      1      -none-    numeric
+> summary(best_model_male)
+          Length Class     Mode   
+a0        1      -none-    numeric
+beta      4      dgCMatrix S4     
+df        1      -none-    numeric
+dim       2      -none-    numeric
+lambda    1      -none-    numeric
+dev.ratio 1      -none-    numeric
+nulldev   1      -none-    numeric
+npasses   1      -none-    numeric
+jerr      1      -none-    numeric
+offset    1      -none-    logical
+call      5      -none-    call   
+nobs      1      -none-    numeric
+> best_model_female$
+best_model_female$a0         best_model_female$dim        best_model_female$nulldev    best_model_female$offset     
+best_model_female$beta       best_model_female$lambda     best_model_female$npasses    best_model_female$call       
+best_model_female$df         best_model_female$dev.ratio  best_model_female$jerr       best_model_female$nobs       
+> best_model_female$beta
+4 x 1 sparse Matrix of class "dgCMatrix"
+                         s0
+(Intercept)      .         
+scale(SCORESUM)  4.27032777
+X21022.0.0      -0.15810222
+BMI_PGS_Locke   -0.09082486
+> best_model_male$beta
+4 x 1 sparse Matrix of class "dgCMatrix"
+                         s0
+(Intercept)      .         
+scale(SCORESUM)  4.64015674
+X21022.0.0      -0.15597143
+BMI_PGS_Locke   -0.02106014
+> history(Inf)
+> best_model_male$a0
+      s0 
+184.8282 
+> best_model_female$a0
+      s0 
+171.6379 
+> rela_root_female["pred_height_BMIheightPGS"] <- 171.6379 + scale(rela_root_female$SCORESUM)*4.27032777 + rela_root_female$sex*-0.15810222 + rela_root_female$BMI_PGS_Locke*-0.09082486
+> test <- rela_root_female
+> rela_root_female["error_BMIheightPGS"] <- rela_root_female$p50_i0 - rela_root_female$pred_height_BMIheightPGS
