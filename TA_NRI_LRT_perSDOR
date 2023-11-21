@@ -1,0 +1,65 @@
+#Sample extract
+library(data.table)
+d <- read.table("TA",header=T)
+sample_num = sample(1:nrow(d), size = round(0.5 * nrow(d)))
+
+all_env_merge_testing_data_v1 =d[ sample_num, ]
+
+all_env_merge_testing_data_v2 = d[ -sample_num, ]
+
+v1_FID <- data.frame(all_env_merge_testing_data_v1$FID)
+v2_FID <- data.frame(all_env_merge_testing_data_v2$FID)
+names(v1_FID) <- c("FID")
+names(v2_FID) <- c("FID")
+fwrite(v1_FID,'model.keep',quote=FALSE,row.names=FALSE,sep="\t")
+fwrite(v2_FID,'vali.keep',quote=FALSE,row.names=FALSE,sep="\t")
+
+
+
+#######
+library(dplyr)
+library("PredictABEL")
+vali <- read.table("vali.keep",header=T)
+model <- read.table("model.keep",header=T)
+d <- read.table("single",header=T)
+vali <- left_join(vali,d)
+model <- left_join(model,d)
+model$case <- model$VD_ICD730 -1
+vali$case <- vali$VD_ICD730 -1
+null <- glm(as.factor(case) ~ age + sex ,data=model,family=binomial)
+new <- glm(as.factor(case) ~ age + sex + scale(SCORESUM),data=model,family=binomial)
+pA <- predict(null,newdata=vali,type="response")
+pB <- predict(new,newdata=vali,type="response")
+reclassification(vali,cOutcome=8,predrisk1=pA,predrisk2=pB,cutoff=c(0,.10,.30,1))
+
+
+library(dplyr)
+library("PredictABEL")
+vali <- read.table("vali.keep",header=T)
+model <- read.table("model.keep",header=T)
+d <- read.table("PT",header=T)
+vali <- left_join(vali,d)
+model <- left_join(model,d)
+model$case <- model$VD_ICD730 -1
+vali$case <- vali$VD_ICD730 -1
+null <- glm(as.factor(case) ~ age + sex ,data=model,family=binomial)
+new <- glm(as.factor(case) ~ age + sex + scale(SCORESUM),data=model,family=binomial)
+pA <- predict(null,newdata=vali,type="response")
+pB <- predict(new,newdata=vali,type="response")
+reclassification(vali,cOutcome=8,predrisk1=pA,predrisk2=pB,cutoff=c(0,.10,.30,1))
+
+
+library(dplyr)
+library("PredictABEL")
+vali <- read.table("vali.keep",header=T)
+model <- read.table("model.keep",header=T)
+d <- read.table("TA",header=T)
+vali <- left_join(vali,d)
+model <- left_join(model,d)
+model$case <- model$VD_ICD730 -1
+vali$case <- vali$VD_ICD730 -1
+null <- glm(as.factor(case) ~ age + sex ,data=model,family=binomial)
+new <- glm(as.factor(case) ~ age + sex + scale(SCORESUM),data=model,family=binomial)
+pA <- predict(null,newdata=vali,type="response")
+pB <- predict(new,newdata=vali,type="response")
+reclassification(vali,cOutcome=8,predrisk1=pA,predrisk2=pB,cutoff=c(0,.10,.30,1))
