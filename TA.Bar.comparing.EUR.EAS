@@ -1,0 +1,50 @@
+
+# Data setup
+disease <- c("Asthma", "Cataract", "Coronary artery disease", "Hypertension", 
+             "Obesity", "Osteoporosis", "Stroke", "Type 2 diabetes")
+prs_cs_ea <- c(1.27, 1.08, 1.28, 1.71, 1.61, 1.09, 1.14, 2.16)
+prs_csx <- c(1.31, 1.08, 1.31, 1.84, 1.66, 1.14, 1.18, 2.26)
+european_pgs <- c(1.42, 1.4, 1.57, 1.67, 2.9, 1.31, 1.14, 1.65)
+upper_prscs <- c(1.27, 1.08, 1.28, 1.71, 1.61, 1.09, 1.14, 2.16)
+lower_prscs <- c(1.27, 1.08, 1.28, 1.71, 1.61, 1.09, 1.14, 2.16)
+upper_prscsx <- c(1.31, 1.08, 1.31, 1.84, 1.66, 1.14, 1.18, 2.26)
+lower_prscsx <- c(1.31, 1.08, 1.31, 1.84, 1.66, 1.14, 1.18, 2.26)
+upper_european <- c(1.16, 1.04, 1.26, 1.5, 2.08, 1.31, 1.07, 1.44)
+lower_european <- c(1.73, 1.12, 2.14, 1.94, 3.5, 1.31, 1.15, 1.88)
+
+data <- data.frame(disease, prs_cs_ea, prs_csx, european_pgs, 
+                   upper_prscs, lower_prscs, upper_prscsx, lower_prscsx, 
+                   upper_european, lower_european)
+
+# Calculating the error margins
+data$err_prscs <- data$upper_prscs - data$prs_cs_ea
+data$err_prscsx <- data$upper_prscsx - data$prs_csx
+data$err_european <- data$upper_european - data$european_pgs
+
+# Reshaping the data for plotting
+library(ggplot2)
+library(reshape2)
+
+# ... [Your existing data setup here] ...
+
+# Reshaping the data for plotting
+data_long <- melt(data, id.vars = 'disease', 
+                  measure.vars = c('prs_cs_ea', 'prs_csx', 'european_pgs'))
+
+# Adjust the colors for the bars
+colors <- c('prs_cs_ea' = "red", 'prs_csx' = "green", 'european_pgs' = "blue")
+
+# Plotting
+png(filename="Bar.Comparing,European.EAS.png",height=3000,width=5000,res=300)
+ggplot(data_long, aes(x = disease, y = value, fill = variable)) +
+  geom_bar(stat = "identity", position = position_dodge(width = 0.7), width = 0.6) +
+  scale_fill_manual(values = colors, labels = c('PRS-CS (East Asian)', 'PRS-CSx (East Asian + European)', 'Reported results of European PGS')) +
+  geom_errorbar(aes(ymin = value - ifelse(variable == 'prs_cs_ea', data$err_prscs, 
+                                          ifelse(variable == 'prs_csx', data$err_prscsx, data$err_european)),
+                    ymax = value + ifelse(variable == 'prs_cs_ea', data$err_prscs, 
+                                          ifelse(variable == 'prs_csx', data$err_prscsx, data$err_european))),
+                width = 0.25, position = position_dodge(width = 0.7)) +
+  labs(x = "DISEASE", y = "PerSD OR", fill = "GROUP") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+dev.off()
