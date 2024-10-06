@@ -62,4 +62,6 @@ null <- glm(as.factor(case) ~ age + sex ,data=model,family=binomial)
 new <- glm(as.factor(case) ~ age + sex + scale(SCORESUM),data=model,family=binomial)
 pA <- predict(null,newdata=vali,type="response")
 pB <- predict(new,newdata=vali,type="response")
-reclassification(vali,cOutcome=8,predrisk1=pA,predrisk2=pB,cutoff=c(0,.10,.30,1))
+case_col_index <- which(names(model) == "case")
+#cOutcome must allocate the case or pheno column place
+reclassification(vali, cOutcome = case_col_index, predrisk1 = pA, predrisk2 = pB, cutoff = c(0, .10, .30, 1))
